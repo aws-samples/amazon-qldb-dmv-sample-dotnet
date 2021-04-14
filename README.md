@@ -18,4 +18,4 @@ dotnet run --project VehicleRegistration
 
 ## License
 
-This library is licensed under the Apache 2.0 license.
+This library is licensed under the MIT-0 License. See the LICENSE file.
