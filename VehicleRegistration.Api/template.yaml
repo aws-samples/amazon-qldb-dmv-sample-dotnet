@@ -1,0 +1,129 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  AddVehicleFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: AddVehicleFunction
+      Handler: VehicleRegistration.Api::VehicleRegistration.Api.Functions.AddVehicleFunction::FunctionHandler
+      Runtime: dotnetcore3.1
+      Timeout: 30
+      CodeUri: .
+      Policies:
+        - Statement:
+          - Sid: QLDBSendCommandPolicy
+            Effect: Allow
+            Action:
+              - qldb:SendCommand
+            Resource: '*'
+      Events:
+        HttpPost:
+          Type: HttpApi
+          Properties:
+            Path: '/vehicle'
+            Method: post
+  AddPersonFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: AddPersonFunction
+      Handler: VehicleRegistration.Api::VehicleRegistration.Api.Functions.AddPersonFunction::FunctionHandler
+      Runtime: dotnetcore3.1
+      Timeout: 30
+      CodeUri: .
+      Policies:
+        - Statement:
+          - Sid: QLDBSendCommandPolicy
+            Effect: Allow
+            Action:
+              - qldb:SendCommand
+            Resource: '*'
+      Events:
+        HttpPost:
+          Type: HttpApi
+          Properties:
+            Path: '/person'
+            Method: post
+  AddVehicleRegistrationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: AddVehicleRegistrationFunction
+      Handler: VehicleRegistration.Api::VehicleRegistration.Api.Functions.AddVehicleRegistrationFunction::FunctionHandler
+      Runtime: dotnetcore3.1
+      Timeout: 30
+      CodeUri: .
+      Policies:
+        - Statement:
+          - Sid: QLDBSendCommandPolicy
+            Effect: Allow
+            Action:
+              - qldb:SendCommand
+            Resource: '*'
+      Events:
+        HttpPost:
+          Type: HttpApi
+          Properties:
+            Path: '/vehicleRegistration'
+            Method: post
+  AddSecondaryOwnerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: AddSecondaryOwnerFunction
+      Handler: VehicleRegistration.Api::VehicleRegistration.Api.Functions.AddSecondaryOwnerFunction::FunctionHandler
+      Runtime: dotnetcore3.1
+      Timeout: 30
+      CodeUri: .
+      Policies:
+        - Statement:
+          - Sid: QLDBSendCommandPolicy
+            Effect: Allow
+            Action:
+              - qldb:SendCommand
+            Resource: '*'
+      Events:
+        HttpPost:
+          Type: HttpApi
+          Properties:
+            Path: '/vehicleRegistration/secondaryOwner'
+            Method: put
+  FindVehiclesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: FindVehiclesFunction
+      Handler: VehicleRegistration.Api::VehicleRegistration.Api.Functions.FindVehiclesFunction::FunctionHandler
+      Runtime: dotnetcore3.1
+      Timeout: 30
+      CodeUri: .
+      Policies:
+        - Statement:
+          - Sid: QLDBSendCommandPolicy
+            Effect: Allow
+            Action:
+              - qldb:SendCommand
+            Resource: '*'
+      Events:
+        HttpPost:
+          Type: HttpApi
+          Properties:
+            Path: '/vehicles'
+            Method: get
+  QueryVehicleRegistrationHistoryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: QueryVehicleRegistrationHistoryFunction
+      Handler: VehicleRegistration.Api::VehicleRegistration.Api.Functions.QueryVehicleRegistrationHistoryFunction::FunctionHandler
+      Runtime: dotnetcore3.1
+      Timeout: 30
+      CodeUri: .
+      Policies:
+        - Statement:
+          - Sid: QLDBSendCommandPolicy
+            Effect: Allow
+            Action:
+              - qldb:SendCommand
+            Resource: '*'
+      Events:
+        HttpPost:
+          Type: HttpApi
+          Properties:
+            Path: '/vehicleRegistration/history'
+            Method: get

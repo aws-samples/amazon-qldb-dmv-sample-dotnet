@@ -1,0 +1,9 @@
+.idea/*
+VehicleRegistration/bin/*
+VehicleRegistration/obj/*
+VehicleRegistration.Api/bin/*
+VehicleRegistration.Api/obj/*
+VehicleRegistration.LedgerSetup/bin/*
+VehicleRegistration.LedgerSetup/obj/*
+VehicleRegistration.Model/bin/*
+VehicleRegistration.Model/obj/*

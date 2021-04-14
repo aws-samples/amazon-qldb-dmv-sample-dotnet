@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>VehicleRegistration</AssemblyName>
+    <RootNamespace>VehicleRegistration</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Amazon.IonDotnet" Version="1.0.0" />
+    <PackageReference Include="Amazon.QLDB.Driver" Version="1.0.0" />
+    <PackageReference Include="AWSSDK.QLDB" Version="3.3.101.32" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VehicleRegistration.LedgerSetup\VehicleRegistration.LedgerSetup.csproj" />
+  </ItemGroup>
+
+</Project>

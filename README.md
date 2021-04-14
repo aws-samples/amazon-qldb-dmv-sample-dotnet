@@ -1,17 +1,21 @@
-## My Project
+# Amazon QLDB .NET DMV Sample App
 
-TODO: Fill this README out!
+The samples in this project demonstrate several uses of Amazon QLDB.
 
-Be sure to:
+## Requirements
 
-* Change the title in this README
-* Edit your repository description on GitHub
+### Basic Configuration
 
-## Security
+See [Accessing Amazon QLDB](https://docs.aws.amazon.com/qldb/latest/developerguide/accessing.html) for information on connecting to AWS.
 
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+## Running the Sample code
+
+The sample code can be run in the following way:
+
+```
+dotnet run --project VehicleRegistration
+```
 
 ## License
 
-This library is licensed under the MIT-0 License. See the LICENSE file.
-
+This library is licensed under the Apache 2.0 license.
