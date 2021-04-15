@@ -18,7 +18,6 @@
 
 using System.Linq;
 using System.Net;
-using Amazon.IonDotnet.Builders;
 using Amazon.IonDotnet.Tree;
 using Amazon.IonDotnet.Tree.Impl;
 using Amazon.Lambda.APIGatewayEvents;
@@ -26,6 +25,7 @@ using Amazon.Lambda.Core;
 using Amazon.QLDB.Driver;
 using Newtonsoft.Json;
 using VehicleRegistration.Api.Services;
+using static VehicleRegistration.Api.Functions.ConvertToIonValue;
 
 namespace VehicleRegistration.Api.Functions
 {
@@ -77,7 +77,8 @@ namespace VehicleRegistration.Api.Functions
                 }
 
                 context.Logger.Log($"Inserting vehicle registration for VIN {vehicleRegistration.Vin}.");
-                IIonValue ionVehicleRegistration = ConvertRequestToIonValue(vehicleRegistration, primaryOwnerPersonDocumentId);
+                vehicleRegistration.Owners.PrimaryOwner.PersonId = primaryOwnerPersonDocumentId;
+                IIonValue ionVehicleRegistration = ConvertObjectToIonValue(vehicleRegistration);
 
                 transactionExecutor.Execute($"INSERT INTO VehicleRegistration ?", ionVehicleRegistration);
             });
@@ -94,12 +95,6 @@ namespace VehicleRegistration.Api.Functions
             IResult selectResult = transactionExecutor.Execute("SELECT VIN FROM VehicleRegistration AS v WHERE v.VIN = ?", ionVin);
 
             return selectResult.Any(x => x.GetField("VIN").StringValue == vin);
-        }
-
-        private IIonValue ConvertRequestToIonValue(VehicleRegistration.Model.VehicleRegistration vehicleRegistration, string primaryOwnerPersonDocumentId)
-        {
-            vehicleRegistration.Owners.PrimaryOwner.PersonId = primaryOwnerPersonDocumentId;
-            return IonLoader.Default.Load(JsonConvert.SerializeObject(vehicleRegistration));
         }
     }
 }

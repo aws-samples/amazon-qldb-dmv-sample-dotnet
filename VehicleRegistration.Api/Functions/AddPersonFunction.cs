@@ -19,7 +19,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Amazon.IonDotnet.Builders;
 using Amazon.IonDotnet.Tree;
 using Amazon.IonDotnet.Tree.Impl;
 using Amazon.Lambda.APIGatewayEvents;
@@ -28,6 +27,7 @@ using Amazon.QLDB.Driver;
 using Newtonsoft.Json;
 using VehicleRegistration.Model;
 using VehicleRegistration.Api.Services;
+using static VehicleRegistration.Api.Functions.ConvertToIonValue;
 
 namespace VehicleRegistration.Api.Functions
 {
@@ -73,7 +73,7 @@ namespace VehicleRegistration.Api.Functions
 
                     context.Logger.Log($"Inserting person for GovId {person.GovId}.");
 
-                    IIonValue ionPerson = ConvertRequestToIonValue(person);
+                    IIonValue ionPerson = ConvertObjectToIonValue(person);
                     transactionExecutor.Execute($"INSERT INTO Person ?", ionPerson);
 
                     context.Logger.Log($"Inserted person for GovId {person.GovId}, returning OK.");
@@ -95,11 +95,6 @@ namespace VehicleRegistration.Api.Functions
             IEnumerable<IIonValue> selectResult = transactionExecutor.Execute("SELECT GovId FROM Person AS p WHERE p.GovId = ?", ionGovId);
 
             return selectResult.Any(x => x.GetField("GovId").StringValue == govId);
-        }
-
-        private IIonValue ConvertRequestToIonValue(Person person)
-        {
-            return IonLoader.Default.Load(JsonConvert.SerializeObject(person));
         }
     }
 }

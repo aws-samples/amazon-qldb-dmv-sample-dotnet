@@ -18,7 +18,6 @@
 
 using System.Linq;
 using System.Net;
-using Amazon.IonDotnet.Builders;
 using Amazon.IonDotnet.Tree;
 using Amazon.IonDotnet.Tree.Impl;
 using Amazon.Lambda.APIGatewayEvents;
@@ -27,6 +26,7 @@ using Amazon.QLDB.Driver;
 using Newtonsoft.Json;
 using VehicleRegistration.Model;
 using VehicleRegistration.Api.Services;
+using static VehicleRegistration.Api.Functions.ConvertToIonValue;
 
 namespace VehicleRegistration.Api.Functions
 {
@@ -72,7 +72,7 @@ namespace VehicleRegistration.Api.Functions
 
                     context.Logger.Log($"Inserting vehicle for VIN {vehicle.Vin}.");
 
-                    IIonValue ionVehicle = ConvertRequestToIonValue(vehicle);
+                    IIonValue ionVehicle = ConvertObjectToIonValue(vehicle);
                     transactionExecutor.Execute($"INSERT INTO Vehicle ?", ionVehicle);
 
                     context.Logger.Log($"Inserted ionVehicle for VIN {vehicle.Vin}, returning OK.");
@@ -94,11 +94,6 @@ namespace VehicleRegistration.Api.Functions
             IResult selectResult = transactionExecutor.Execute("SELECT VIN FROM Vehicle AS v WHERE v.VIN = ?", ionVin);
 
             return selectResult.Any(x => x.GetField("VIN").StringValue == vin);
-        }
-
-        private IIonValue ConvertRequestToIonValue(Vehicle vehicle)
-        {
-            return IonLoader.Default.Load(JsonConvert.SerializeObject(vehicle));
         }
     }
 }
