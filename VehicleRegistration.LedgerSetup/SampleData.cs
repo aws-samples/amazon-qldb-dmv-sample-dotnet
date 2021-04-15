@@ -33,7 +33,7 @@ namespace VehicleRegistration.LedgerSetup
     /// </summary>
     public class SampleData
     {
-        private IQldbDriver qldbDriver;
+        private IAsyncQldbDriver qldbDriver;
         
         public List<Person> people = new List<Person>
         {
@@ -49,45 +49,45 @@ namespace VehicleRegistration.LedgerSetup
                 GovId = "S152-780-97-415-0", GovIdType = "Passport", Address = "4450 Honeysuckle Lane, Seattle, WA, 98101" }
         };
 
-        public SampleData(IQldbDriver qldbDriver)
+        public SampleData(IAsyncQldbDriver qldbDriver)
         {
             this.qldbDriver = qldbDriver;
         }
 
         public async Task Run()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
-                InsertVehicles();
+                await InsertVehicles();
 
-                IResult insertPeopleResult = InsertPeople();
-                IEnumerable<string> peopleDocumentIds = insertPeopleResult.Select(x => x.GetField("documentId").StringValue);
+                Amazon.QLDB.Driver.IAsyncResult insertPeopleResult = await InsertPeople();
+                List<string> peopleDocumentIds = await insertPeopleResult.Select(x => x.GetField("documentId").StringValue).ToListAsync();
 
-                InsertDriversLicenses(peopleDocumentIds.ToList());
-                InsertVehicleRegistrations(peopleDocumentIds.ToList());
+                InsertDriversLicenses(peopleDocumentIds);
+                InsertVehicleRegistrations(peopleDocumentIds);
             });
         }
 
-        private void InsertVehicles() 
+        private async Task InsertVehicles() 
         {
-            qldbDriver.Execute(transactionExecutor =>
+            await qldbDriver.Execute(async transactionExecutor =>
             {
-                Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "1N4AL11D75C109151", Type = "Sedan", Year= 2011, 
+                await Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "1N4AL11D75C109151", Type = "Sedan", Year= 2011, 
                     Make = "Audi", Model = "A5", Color= "Silver" });
-                Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "KM8SRDHF6EU074761", Type = "Sedan", Year= 2015, 
+                await Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "KM8SRDHF6EU074761", Type = "Sedan", Year= 2015, 
                     Make = "Tesla", Model = "Model S", Color= "Blue" });
-                Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "3HGGK5G53FM761765", Type = "Motorcycle", Year= 2011, 
+                await Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "3HGGK5G53FM761765", Type = "Motorcycle", Year= 2011, 
                     Make = "Ducati", Model = "Monster", Color= "Yellowr" });
-                Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "1HVBBAANXWH544237", Type = "Semi", Year= 2009, 
+                await Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "1HVBBAANXWH544237", Type = "Semi", Year= 2009, 
                     Make = "Ford", Model = "F 150", Color= "Black" });
-                Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "1C4RJFAG0FC625797", Type = "Sedan", Year= 2019, 
+                await Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "1C4RJFAG0FC625797", Type = "Sedan", Year= 2019, 
                     Make = "Mercedes", Model = "CLK 350", Color= "White" });
             }); 
         }
 
-       private IResult InsertPeople() 
+        private async Task<Amazon.QLDB.Driver.IAsyncResult> InsertPeople() 
         {
-            return qldbDriver.Execute(transactionExecutor => Insert(transactionExecutor, "Person", people)); 
+            return await qldbDriver.Execute(async transactionExecutor => await Insert(transactionExecutor, "Person", people)); 
         }
 
         private void InsertDriversLicenses(List<string> peopleDocumentIds)
@@ -111,9 +111,9 @@ namespace VehicleRegistration.LedgerSetup
                 licenses[i].PersonId = peopleDocumentIds[i];
             }
 
-            qldbDriver.Execute(transactionExecutor =>
+            qldbDriver.Execute(async transactionExecutor =>
             {
-                Insert(transactionExecutor, "DriversLicense", licenses);
+                await Insert(transactionExecutor, "DriversLicense", licenses);
             }); 
         }
 
@@ -143,16 +143,13 @@ namespace VehicleRegistration.LedgerSetup
                 registrations[i].Owners.PrimaryOwner = new Owner { PersonId = peopleDocumentIds[i] };
             }
 
-            qldbDriver.Execute(transactionExecutor =>
-            {
-                Insert(transactionExecutor, "VehicleRegistration", registrations);
-            }); 
+            qldbDriver.Execute(transactionExecutor => Insert(transactionExecutor, "VehicleRegistration", registrations)); 
         }
 
-        private IResult Insert<T>(TransactionExecutor transactionExecutor, string tableName, T value)
+        private async Task<Amazon.QLDB.Driver.IAsyncResult> Insert<T>(AsyncTransactionExecutor transactionExecutor, string tableName, T value)
         {
             IIonValue ionValue = IonLoader.Default.Load(JsonConvert.SerializeObject(value));
-            return transactionExecutor.Execute($"INSERT INTO {tableName} ?", ionValue);
+            return await transactionExecutor.Execute($"INSERT INTO {tableName} ?", ionValue);
         }
     }
 }

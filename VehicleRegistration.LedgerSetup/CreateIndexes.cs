@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.IonDotnet.Tree;
@@ -35,10 +36,10 @@ namespace VehicleRegistration.LedgerSetup
     /// </summary>
     public class CreateIndexes
     {
-        private IQldbDriver qldbDriver;
+        private IAsyncQldbDriver qldbDriver;
         private readonly IValueFactory valueFactory;
 
-        public CreateIndexes(IQldbDriver qldbDriver)
+        public CreateIndexes(IAsyncQldbDriver qldbDriver)
         {
             this.qldbDriver = qldbDriver;
             this.valueFactory = new ValueFactory();
@@ -62,10 +63,7 @@ namespace VehicleRegistration.LedgerSetup
             if (!await CheckIndexExistsAsync(tableName, field))
             {
                 Console.WriteLine($"Index does not exists, creating index on {tableName} for {field}.");
-                qldbDriver.Execute(transactionExecutor =>
-                {
-                    transactionExecutor.Execute($"CREATE INDEX ON {tableName}({field})");
-                });
+                await qldbDriver.Execute(async transactionExecutor => await transactionExecutor.Execute($"CREATE INDEX ON {tableName}({field})"));
             }
             else
             {
@@ -75,19 +73,18 @@ namespace VehicleRegistration.LedgerSetup
 
         private async Task<bool> CheckIndexExistsAsync(string tableName, string field)
         {
-            return await Task.Run(() =>
+            return await Task.Run(async () =>
             {
-                IResult result = qldbDriver.Execute(transactionExecutor =>
+                Amazon.QLDB.Driver.IAsyncResult result = await qldbDriver.Execute(async transactionExecutor =>
                 {
                     IIonValue ionTableName = this.valueFactory.NewString(tableName);
-                    IResult result = transactionExecutor.Execute($"SELECT * FROM information_schema.user_tables WHERE name = ?", ionTableName);
-
-                    return result;
+                    return await transactionExecutor.Execute($"SELECT * FROM information_schema.user_tables WHERE name = ?", ionTableName);
                 });
 
-                if (result.Any())
+                List<IIonValue> ionValues = await result.ToListAsync();
+                if (ionValues.Any())
                 {
-                    IIonList indexes = result.First().GetField("indexes") as IIonList;
+                    IIonList indexes = ionValues.First().GetField("indexes");
                     foreach (IIonValue index in indexes)
                     {
                         string expr = index.GetField("expr").StringValue;

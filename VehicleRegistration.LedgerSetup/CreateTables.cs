@@ -33,9 +33,9 @@ namespace VehicleRegistration.LedgerSetup
     /// </summary>
     public class CreateTables
     {
-        private IQldbDriver qldbDriver;
+        private IAsyncQldbDriver qldbDriver;
 
-        public CreateTables(IQldbDriver qldbDriver)
+        public CreateTables(IAsyncQldbDriver qldbDriver)
         {
             this.qldbDriver = qldbDriver;
         }
@@ -56,10 +56,7 @@ namespace VehicleRegistration.LedgerSetup
             if (!await CheckTableExistsAsync(tableName))
             {
                 Console.WriteLine($"Table does not exist, creating table with name {tableName}.");
-                qldbDriver.Execute(transactionExecutor =>
-                {
-                    transactionExecutor.Execute($"CREATE TABLE {tableName}");
-                });
+                await qldbDriver.Execute(async transactionExecutor => await transactionExecutor.Execute($"CREATE TABLE {tableName}"));
             }
             else 
             {
@@ -69,9 +66,9 @@ namespace VehicleRegistration.LedgerSetup
 
         private async Task<bool> CheckTableExistsAsync(string tableName)
         {
-            return await Task.Run(() =>
+            return await Task.Run(async () =>
             {
-                return qldbDriver.ListTableNames().Where(x => x == tableName).Any();
+                return (await qldbDriver.ListTableNames()).Any(x => x == tableName);
             });
         }
     }

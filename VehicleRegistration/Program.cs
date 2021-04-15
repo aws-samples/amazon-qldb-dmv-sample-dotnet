@@ -26,14 +26,14 @@ namespace VehicleRegistration
     {
         private const string LEGDER_NAME = "vehicle-registration";
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            PerformSetup().GetAwaiter().GetResult();
+            await PerformSetup();
         }
 
         private static async Task PerformSetup()
         {
-            IQldbDriver qldbDriver = QldbDriver.Builder()
+            IAsyncQldbDriver qldbDriver = AsyncQldbDriver.Builder()
                 .WithLedger(LEGDER_NAME)
                 .Build();
 
