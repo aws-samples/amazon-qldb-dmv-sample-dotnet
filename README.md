@@ -17,7 +17,7 @@ See [Setting Region](https://docs.aws.amazon.com/sdk-for-net/latest/developer-gu
 The sample code can be run in the following way:
 
 ```
-dotnet run --project VehicleRegistration
+dotnet run --project Amazon.QLDB.DMVSample
 ```
 
 ## License

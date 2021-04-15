@@ -1,9 +1,9 @@
 .idea/*
-VehicleRegistration/bin/*
-VehicleRegistration/obj/*
-VehicleRegistration.Api/bin/*
-VehicleRegistration.Api/obj/*
-VehicleRegistration.LedgerSetup/bin/*
-VehicleRegistration.LedgerSetup/obj/*
-VehicleRegistration.Model/bin/*
-VehicleRegistration.Model/obj/*
+Amazon.QLDB.DMVSample/bin/*
+Amazon.QLDB.DMVSample/obj/*
+Amazon.QLDB.DMVSample.Api/bin/*
+Amazon.QLDB.DMVSample.Api/obj/*
+Amazon.QLDB.DMVSample.LedgerSetup/bin/*
+Amazon.QLDB.DMVSample.LedgerSetup/obj/*
+Amazon.QLDB.DMVSample.Model/bin/*
+Amazon.QLDB.DMVSample.Model/obj/*
