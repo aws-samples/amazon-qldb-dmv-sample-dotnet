@@ -127,7 +127,7 @@ namespace VehicleRegistration.LedgerSetup
                 new Model.VehicleRegistration { Vin = "KM8SRDHF6EU074761", LicensePlateNumber = "CA762X", 
                     State = "WA", City = "Kent", PendingPenaltyTicketAmount = 130.75, ValidFromDate = DateTime.Parse("2017-09-14"), 
                     ValidToDate = DateTime.Parse("2020-06-25"), Owners = new Owners {} },
-                new Model.VehicleRegistration { Vin = "KM8SRDHF6EU074761", LicensePlateNumber = "CD820Z", 
+                new Model.VehicleRegistration { Vin = "3HGGK5G53FM761765", LicensePlateNumber = "CD820Z", 
                     State = "WA", City = "Everett", PendingPenaltyTicketAmount = 442.30, ValidFromDate = DateTime.Parse("2011-03-17"), 
                     ValidToDate = DateTime.Parse("2021-03-24"), Owners = new Owners {} },
                 new Model.VehicleRegistration { Vin = "1HVBBAANXWH544237", LicensePlateNumber = "LS477D", 
