@@ -77,7 +77,7 @@ namespace VehicleRegistration.LedgerSetup
                 });
 
                 ledgerState = describeResponse.State;
-                Thread.Sleep(2000);
+                await Task.Delay(2000);
             } 
             while (ledgerState != LedgerState.ACTIVE);
             Console.WriteLine("Ledger is active.");
