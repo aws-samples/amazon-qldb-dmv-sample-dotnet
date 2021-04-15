@@ -47,14 +47,14 @@ namespace VehicleRegistration.LedgerSetup
         public async Task Run()
         {
             await Task.Run(async () =>
-             {
-                 await CreateIndexAsync("VehicleRegistration", "VIN");
-                 await CreateIndexAsync("VehicleRegistration", "LicensePlateNumber");
-                 await CreateIndexAsync("Vehicle", "VIN");
-                 await CreateIndexAsync("Person", "GovId");
-                 await CreateIndexAsync("DriversLicense", "LicenseNumber");
-                 await CreateIndexAsync("DriversLicense", "PersonId");
-             });
+            {
+                await CreateIndexAsync("VehicleRegistration", "VIN");
+                await CreateIndexAsync("VehicleRegistration", "LicensePlateNumber");
+                await CreateIndexAsync("Vehicle", "VIN");
+                await CreateIndexAsync("Person", "GovId");
+                await CreateIndexAsync("DriversLicense", "LicenseNumber");
+                await CreateIndexAsync("DriversLicense", "PersonId");
+            });
         }
 
         private async Task CreateIndexAsync(string tableName, string field) 
@@ -75,15 +75,15 @@ namespace VehicleRegistration.LedgerSetup
 
         private async Task<bool> CheckIndexExistsAsync(string tableName, string field)
         {
-             return await Task.Run(() =>
-             {
-                 IResult result = qldbDriver.Execute(transactionExecutor =>
-                 {
-                     IIonValue ionTableName = this.valueFactory.NewString(tableName);
-                     IResult result = transactionExecutor.Execute($"SELECT * FROM information_schema.user_tables WHERE name = ?", ionTableName);
-                     
-                     return result;
-                 });
+            return await Task.Run(() =>
+            {
+                IResult result = qldbDriver.Execute(transactionExecutor =>
+                {
+                    IIonValue ionTableName = this.valueFactory.NewString(tableName);
+                    IResult result = transactionExecutor.Execute($"SELECT * FROM information_schema.user_tables WHERE name = ?", ionTableName);
+
+                    return result;
+                });
 
                 if (result.Any())
                 {
@@ -98,8 +98,8 @@ namespace VehicleRegistration.LedgerSetup
                     }    
                 }
 
-                 return false;
-             });
+                return false;
+            });
         }
     }
 }

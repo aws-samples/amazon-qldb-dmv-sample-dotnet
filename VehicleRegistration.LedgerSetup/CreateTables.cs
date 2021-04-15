@@ -69,10 +69,10 @@ namespace VehicleRegistration.LedgerSetup
 
         private async Task<bool> CheckTableExistsAsync(string tableName)
         {
-             return await Task.Run(() =>
-             {
-                 return qldbDriver.ListTableNames().Where(x => x == tableName).Any();
-             });
+            return await Task.Run(() =>
+            {
+                return qldbDriver.ListTableNames().Where(x => x == tableName).Any();
+            });
         }
     }
 }
