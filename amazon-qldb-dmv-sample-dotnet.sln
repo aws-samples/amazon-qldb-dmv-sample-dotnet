@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amazon.QLDB.DMVSample", "Amazon.QLDB.DMVSample\Amazon.QLDB.DMVSample.csproj", "{15446B4F-14E1-4569-A380-04BC213C0238}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amazon.QLDB.DMVSample.Api", "Amazon.QLDB.DMVSample.Api\Amazon.QLDB.DMVSample.Api.csproj", "{108A015A-20FD-4BA9-BED6-FCBDDB3C0628}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amazon.QLDB.DMVSample.LedgerSetup", "Amazon.QLDB.DMVSample.LedgerSetup\Amazon.QLDB.DMVSample.LedgerSetup.csproj", "{467CC1E8-2C71-4F28-9434-EBDD17D27AB4}"
@@ -14,10 +12,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{15446B4F-14E1-4569-A380-04BC213C0238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{15446B4F-14E1-4569-A380-04BC213C0238}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{15446B4F-14E1-4569-A380-04BC213C0238}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{15446B4F-14E1-4569-A380-04BC213C0238}.Release|Any CPU.Build.0 = Release|Any CPU
 		{108A015A-20FD-4BA9-BED6-FCBDDB3C0628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{108A015A-20FD-4BA9-BED6-FCBDDB3C0628}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{108A015A-20FD-4BA9-BED6-FCBDDB3C0628}.Release|Any CPU.ActiveCfg = Release|Any CPU

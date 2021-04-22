@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using Amazon.QLDB.DMVSample.LedgerSetup;
 using Amazon.QLDB.Driver;
 
-namespace Amazon.QLDB.DMVSample
+namespace Amazon.QLDB.DMVSample.LedgerSetup
 {
     public class Program
     {
