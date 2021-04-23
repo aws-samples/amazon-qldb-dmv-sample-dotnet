@@ -29,6 +29,8 @@ using Amazon.QLDB.DMVSample.Model;
 using Amazon.QLDB.Driver;
 using Newtonsoft.Json;
 
+using static Amazon.QLDB.DMVSample.Model.Constants;
+
 namespace Amazon.QLDB.DMVSample.Api.Functions
 {
     /// <summary>
@@ -58,7 +60,7 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
             string vin = request.QueryStringParameters["VIN"];
             IEnumerable<IIonValue> selectResult = this.qldbDriver.Execute(transactionExecutor =>
             {
-                string vehicleRegistrationDocumentId = this.tableMetadataService.GetDocumentId(transactionExecutor, "VehicleRegistration", "VIN", vin);
+                string vehicleRegistrationDocumentId = this.tableMetadataService.GetDocumentId(transactionExecutor, VehicleRegistrationTableName, "VIN", vin);
                 context.Logger.Log($"Getting history for vehicle registration where document ID is {vehicleRegistrationDocumentId}.");
 
                 IIonValue ionVehicleRegistrationDocumentId = this.valueFactory.NewString(vehicleRegistrationDocumentId);

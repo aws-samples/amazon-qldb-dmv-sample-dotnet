@@ -29,6 +29,8 @@ using Amazon.QLDB.DMVSample.Model;
 using Amazon.QLDB.Driver;
 using Newtonsoft.Json;
 
+using static Amazon.QLDB.DMVSample.Model.Constants;
+
 namespace Amazon.QLDB.DMVSample.Api.Functions
 {
     /// <summary>
@@ -83,7 +85,7 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
                     transactionExecutor.Abort();
                 }
 
-                string secondaryOwnerPersonDocumentId = this.tableMetadataService.GetDocumentId(transactionExecutor, "Person", "GovId", newSecondaryOwnersGovIds.First());
+                string secondaryOwnerPersonDocumentId = this.tableMetadataService.GetDocumentId(transactionExecutor, PersonTableName, "GovId", newSecondaryOwnersGovIds.First());
                 if (!CheckIfSecondaryOwnerExists(existingSecondaryOwners, secondaryOwnerPersonDocumentId))
                 {
                     context.Logger.Log($"Secondary owner does not exists with document ID {secondaryOwnerPersonDocumentId}, adding secondary owner.");

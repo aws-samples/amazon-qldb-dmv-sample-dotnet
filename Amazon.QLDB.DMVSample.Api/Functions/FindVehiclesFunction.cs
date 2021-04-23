@@ -28,6 +28,8 @@ using Amazon.QLDB.DMVSample.Api.Services;
 using Amazon.QLDB.Driver;
 using Newtonsoft.Json;
 
+using static Amazon.QLDB.DMVSample.Model.Constants;
+
 namespace Amazon.QLDB.DMVSample.Api.Functions
 {
     /// <summary>
@@ -58,7 +60,7 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
             
             IResult selectResult = this.qldbDriver.Execute(transactionExecutor =>
             {
-                string personDocumentId = this.tableMetadataService.GetDocumentId(transactionExecutor, "Person", "GovId", govId);
+                string personDocumentId = this.tableMetadataService.GetDocumentId(transactionExecutor, PersonTableName, "GovId", govId);
                 context.Logger.Log($"Searching for vehicles where primary owner ID is {personDocumentId}.");
 
                 IIonValue ionPersonDocumentId = this.valueFactory.NewString(personDocumentId);

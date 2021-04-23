@@ -19,12 +19,12 @@
 using Amazon.QLDB.Driver;
 using Amazon.QLDBSession;
 
+using static Amazon.QLDB.DMVSample.Model.Constants;
+
 namespace Amazon.QLDB.DMVSample.Api.Services
 {
     public class QldbService : IQldbService
     {
-        public const string LEGDER_NAME = "vehicle-registration";
-
         private IQldbDriver driver;    
 
         public QldbService()
@@ -32,7 +32,7 @@ namespace Amazon.QLDB.DMVSample.Api.Services
             AmazonQLDBSessionConfig amazonQldbSessionConfig = new AmazonQLDBSessionConfig();
             this.driver = QldbDriver.Builder()
                 .WithQLDBSessionConfig(amazonQldbSessionConfig)
-                .WithLedger(LEGDER_NAME)
+                .WithLedger(LedgerName)
                 .Build();
         }
 

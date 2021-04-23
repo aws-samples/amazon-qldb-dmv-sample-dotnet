@@ -24,6 +24,8 @@ using Amazon.IonDotnet.Tree;
 using Amazon.IonDotnet.Tree.Impl;
 using Amazon.QLDB.Driver;
 
+using static Amazon.QLDB.DMVSample.Model.Constants;
+
 namespace Amazon.QLDB.DMVSample.LedgerSetup
 {
     /// <summary>
@@ -49,12 +51,12 @@ namespace Amazon.QLDB.DMVSample.LedgerSetup
         {
             await Task.Run(async () =>
             {
-                await CreateIndexAsync("VehicleRegistration", "VIN");
-                await CreateIndexAsync("VehicleRegistration", "LicensePlateNumber");
-                await CreateIndexAsync("Vehicle", "VIN");
-                await CreateIndexAsync("Person", "GovId");
-                await CreateIndexAsync("DriversLicense", "LicenseNumber");
-                await CreateIndexAsync("DriversLicense", "PersonId");
+                await CreateIndexAsync(VehicleRegistrationTableName, "VIN");
+                await CreateIndexAsync(VehicleRegistrationTableName, "LicensePlateNumber");
+                await CreateIndexAsync(VehicleTableName, "VIN");
+                await CreateIndexAsync(PersonTableName, "GovId");
+                await CreateIndexAsync(DriversLicenseTableName, "LicenseNumber");
+                await CreateIndexAsync(DriversLicenseTableName, "PersonId");
             });
         }
 

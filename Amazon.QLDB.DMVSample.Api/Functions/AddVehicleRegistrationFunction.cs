@@ -28,6 +28,7 @@ using Amazon.QLDB.Driver;
 using Newtonsoft.Json;
 
 using static Amazon.QLDB.DMVSample.Api.Functions.ConvertToIonValue;
+using static Amazon.QLDB.DMVSample.Model.Constants;
 
 namespace Amazon.QLDB.DMVSample.Api.Functions
 {
@@ -61,7 +62,7 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
             this.qldbDriver.Execute(transactionExecutor =>
             {
                 context.Logger.Log($"Looking for person document ID {vehicleRegistration.Owners?.PrimaryOwner?.PersonId}.");
-                string primaryOwnerPersonDocumentId = this.tableMetadataService.GetDocumentId(transactionExecutor, "Person", "GovId", vehicleRegistration.Owners?.PrimaryOwner?.PersonId);
+                string primaryOwnerPersonDocumentId = this.tableMetadataService.GetDocumentId(transactionExecutor, PersonTableName, "GovId", vehicleRegistration.Owners?.PrimaryOwner?.PersonId);
                 
                 if (string.IsNullOrWhiteSpace(primaryOwnerPersonDocumentId))
                 {

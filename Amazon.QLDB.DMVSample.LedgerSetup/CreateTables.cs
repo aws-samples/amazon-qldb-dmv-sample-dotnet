@@ -21,6 +21,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Amazon.QLDB.Driver;
 
+using static Amazon.QLDB.DMVSample.Model.Constants;
+
 namespace Amazon.QLDB.DMVSample.LedgerSetup
 {
     /// <summary>
@@ -44,10 +46,10 @@ namespace Amazon.QLDB.DMVSample.LedgerSetup
         {
             await Task.Run(async () =>
             {
-                await CreateTableAsync("VehicleRegistration");
-                await CreateTableAsync("Vehicle");
-                await CreateTableAsync("Person");
-                await CreateTableAsync("DriversLicense");
+                await CreateTableAsync(VehicleRegistrationTableName);
+                await CreateTableAsync(VehicleTableName);
+                await CreateTableAsync(PersonTableName);
+                await CreateTableAsync(DriversLicenseTableName);
             });
         }
 

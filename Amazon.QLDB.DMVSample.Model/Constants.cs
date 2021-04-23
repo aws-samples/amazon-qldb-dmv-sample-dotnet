@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  * SPDX-License-Identifier: MIT-0
  *
@@ -16,37 +16,14 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using System.Threading.Tasks;
-using Amazon.QLDB.Driver;
-
-using static Amazon.QLDB.DMVSample.Model.Constants;
-
-namespace Amazon.QLDB.DMVSample.LedgerSetup
+namespace Amazon.QLDB.DMVSample.Model
 {
-    public class Program
+    public class Constants
     {
-        static async Task Main(string[] args)
-        {
-            await PerformSetup();
-        }
-
-        private static async Task PerformSetup()
-        {
-            IAsyncQldbDriver qldbDriver = AsyncQldbDriver.Builder()
-                .WithLedger(LedgerName)
-                .Build();
-
-            CreateLedger createLedger = new CreateLedger();
-            await createLedger.Run();
-
-            CreateTables createTables = new CreateTables(qldbDriver);
-            await createTables.Run();
-
-            CreateIndexes createIndexes = new CreateIndexes(qldbDriver);
-            await createIndexes.Run();
-
-            SampleData sampleData = new SampleData(qldbDriver);
-            await sampleData.Run();
-        }
+        public const string LedgerName = "vehicle-registration";
+        public const string VehicleTableName = "Vehicle";
+        public const string PersonTableName = "Person";
+        public const string DriversLicenseTableName = "DriversLicense";
+        public const string VehicleRegistrationTableName = "VehicleRegistration";
     }
 }

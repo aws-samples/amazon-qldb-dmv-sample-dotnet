@@ -18,10 +18,10 @@
 
 using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Amazon.QLDB;
 using Amazon.QLDB.Model;
+
+using static Amazon.QLDB.DMVSample.Model.Constants;
 
 namespace Amazon.QLDB.DMVSample.LedgerSetup
 {
@@ -35,8 +35,6 @@ namespace Amazon.QLDB.DMVSample.LedgerSetup
     /// </summary>
     public class CreateLedger
     {
-        private const string LEDGER_NAME = "vehicle-registration";
-
         private IAmazonQLDB qldbClient;
 
         public CreateLedger()
@@ -60,7 +58,7 @@ namespace Amazon.QLDB.DMVSample.LedgerSetup
             await qldbClient.CreateLedgerAsync(new CreateLedgerRequest 
             {
                 DeletionProtection = true,
-                Name = LEDGER_NAME,
+                Name = LedgerName,
                 PermissionsMode = PermissionsMode.ALLOW_ALL
             });
         }
@@ -73,7 +71,7 @@ namespace Amazon.QLDB.DMVSample.LedgerSetup
             {
                 DescribeLedgerResponse describeResponse = await qldbClient.DescribeLedgerAsync(new DescribeLedgerRequest
                 {
-                    Name = LEDGER_NAME
+                    Name = LedgerName
                 });
 
                 ledgerState = describeResponse.State;
@@ -87,7 +85,7 @@ namespace Amazon.QLDB.DMVSample.LedgerSetup
         {
             Console.WriteLine("Checking if ledger exists.");
             ListLedgersResponse response = await qldbClient.ListLedgersAsync(new ListLedgersRequest());
-            return response.Ledgers != null && response.Ledgers.Any(x => x.Name == LEDGER_NAME);
+            return response.Ledgers != null && response.Ledgers.Any(x => x.Name == LedgerName);
         }
     }
 }

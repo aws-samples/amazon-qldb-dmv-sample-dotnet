@@ -26,6 +26,8 @@ using Amazon.QLDB.DMVSample.Model;
 using Amazon.QLDB.Driver;
 using Newtonsoft.Json;
 
+using static Amazon.QLDB.DMVSample.Model.Constants;
+
 namespace Amazon.QLDB.DMVSample.LedgerSetup
 {
     /// <summary>
@@ -58,39 +60,54 @@ namespace Amazon.QLDB.DMVSample.LedgerSetup
         {
             await Task.Run(async () =>
             {
+                await DeleteDataFromTable(VehicleTableName);
                 await InsertVehicles();
 
+                await DeleteDataFromTable(PersonTableName);
                 Amazon.QLDB.Driver.IAsyncResult insertPeopleResult = await InsertPeople();
                 List<string> peopleDocumentIds = await insertPeopleResult.Select(x => x.GetField("documentId").StringValue).ToListAsync();
 
-                InsertDriversLicenses(peopleDocumentIds);
-                InsertVehicleRegistrations(peopleDocumentIds);
+                await DeleteDataFromTable(DriversLicenseTableName);
+                await InsertDriversLicenses(peopleDocumentIds);
+                
+                await DeleteDataFromTable(VehicleRegistrationTableName);
+                await InsertVehicleRegistrations(peopleDocumentIds);
             });
         }
 
         private async Task InsertVehicles() 
         {
+            Console.WriteLine("Inserting vehicle data");
+
             await qldbDriver.Execute(async transactionExecutor =>
             {
-                await Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "1N4AL11D75C109151", Type = "Sedan", Year= 2011, 
+                await Insert(transactionExecutor, VehicleTableName, new Vehicle { Vin = "1N4AL11D75C109151", Type = "Sedan", Year= 2011, 
                     Make = "Audi", Model = "A5", Color= "Silver" });
-                await Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "KM8SRDHF6EU074761", Type = "Sedan", Year= 2015, 
+                await Insert(transactionExecutor, VehicleTableName, new Vehicle { Vin = "KM8SRDHF6EU074761", Type = "Sedan", Year= 2015, 
                     Make = "Tesla", Model = "Model S", Color= "Blue" });
-                await Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "3HGGK5G53FM761765", Type = "Motorcycle", Year= 2011, 
+                await Insert(transactionExecutor, VehicleTableName, new Vehicle { Vin = "3HGGK5G53FM761765", Type = "Motorcycle", Year= 2011, 
                     Make = "Ducati", Model = "Monster", Color= "Yellowr" });
-                await Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "1HVBBAANXWH544237", Type = "Semi", Year= 2009, 
+                await Insert(transactionExecutor, VehicleTableName, new Vehicle { Vin = "1HVBBAANXWH544237", Type = "Semi", Year= 2009, 
                     Make = "Ford", Model = "F 150", Color= "Black" });
-                await Insert(transactionExecutor, "Vehicle", new Vehicle { Vin = "1C4RJFAG0FC625797", Type = "Sedan", Year= 2019, 
+                await Insert(transactionExecutor, VehicleTableName, new Vehicle { Vin = "1C4RJFAG0FC625797", Type = "Sedan", Year= 2019, 
                     Make = "Mercedes", Model = "CLK 350", Color= "White" });
             }); 
+            
+            Console.WriteLine("Vehicle data inserted");
         }
 
         private async Task<Amazon.QLDB.Driver.IAsyncResult> InsertPeople() 
         {
-            return await qldbDriver.Execute(async transactionExecutor => await Insert(transactionExecutor, "Person", people)); 
+            Console.WriteLine("Inserting person data");
+            
+            var result = await qldbDriver.Execute(async transactionExecutor => await Insert(transactionExecutor, PersonTableName, people));
+            
+            Console.WriteLine("Person data inserted");
+
+            return result;
         }
 
-        private void InsertDriversLicenses(List<string> peopleDocumentIds)
+        private async Task InsertDriversLicenses(List<string> peopleDocumentIds)
         {
             List<DriversLicense> licenses = new List<DriversLicense>
             {
@@ -111,29 +128,31 @@ namespace Amazon.QLDB.DMVSample.LedgerSetup
                 licenses[i].PersonId = peopleDocumentIds[i];
             }
 
-            qldbDriver.Execute(async transactionExecutor =>
+            Console.WriteLine("Inserting driver's license data");
+            await qldbDriver.Execute(async transactionExecutor =>
             {
                 await Insert(transactionExecutor, "DriversLicense", licenses);
-            }); 
+            });
+            Console.WriteLine("Driver's license data inserted");
         }
 
-        private void InsertVehicleRegistrations(List<string> peopleDocumentIds)
+        private async Task InsertVehicleRegistrations(List<string> peopleDocumentIds)
         {
-            List<Model.VehicleRegistration> registrations = new List<Model.VehicleRegistration>
+            List<VehicleRegistration> registrations = new List<VehicleRegistration>
             {
-                new Model.VehicleRegistration { Vin = "1N4AL11D75C109151", LicensePlateNumber = "LEWISR261LL", 
+                new VehicleRegistration { Vin = "1N4AL11D75C109151", LicensePlateNumber = "LEWISR261LL", 
                     State = "WA", City = "Seattle",  PendingPenaltyTicketAmount = 90.25, ValidFromDate = DateTime.Parse("2017-08-21"), 
                     ValidToDate = DateTime.Parse("2020-05-11"), Owners = new Owners {}},
-                new Model.VehicleRegistration { Vin = "KM8SRDHF6EU074761", LicensePlateNumber = "CA762X", 
+                new VehicleRegistration { Vin = "KM8SRDHF6EU074761", LicensePlateNumber = "CA762X", 
                     State = "WA", City = "Kent", PendingPenaltyTicketAmount = 130.75, ValidFromDate = DateTime.Parse("2017-09-14"), 
                     ValidToDate = DateTime.Parse("2020-06-25"), Owners = new Owners {} },
-                new Model.VehicleRegistration { Vin = "3HGGK5G53FM761765", LicensePlateNumber = "CD820Z", 
+                new VehicleRegistration { Vin = "3HGGK5G53FM761765", LicensePlateNumber = "CD820Z", 
                     State = "WA", City = "Everett", PendingPenaltyTicketAmount = 442.30, ValidFromDate = DateTime.Parse("2011-03-17"), 
                     ValidToDate = DateTime.Parse("2021-03-24"), Owners = new Owners {} },
-                new Model.VehicleRegistration { Vin = "1HVBBAANXWH544237", LicensePlateNumber = "LS477D", 
+                new VehicleRegistration { Vin = "1HVBBAANXWH544237", LicensePlateNumber = "LS477D", 
                     State = "WA", City = "Tacoma", PendingPenaltyTicketAmount = 42.20, ValidFromDate = DateTime.Parse("2011-10-26"), 
                     ValidToDate = DateTime.Parse("2023-09-25"), Owners = new Owners {} },
-                new Model.VehicleRegistration { Vin = "1C4RJFAG0FC625797", LicensePlateNumber = "TH393F", 
+                new VehicleRegistration { Vin = "1C4RJFAG0FC625797", LicensePlateNumber = "TH393F", 
                     State = "WA", City = "Olympia", PendingPenaltyTicketAmount = 30.45, ValidFromDate = DateTime.Parse("2013-09-02"), 
                     ValidToDate = DateTime.Parse("2023-09-25"), Owners = new Owners {} }
             };
@@ -143,7 +162,24 @@ namespace Amazon.QLDB.DMVSample.LedgerSetup
                 registrations[i].Owners.PrimaryOwner = new Owner { PersonId = peopleDocumentIds[i] };
             }
 
-            qldbDriver.Execute(transactionExecutor => Insert(transactionExecutor, "VehicleRegistration", registrations)); 
+            Console.WriteLine("Inserting vehicle registration data");
+            await qldbDriver.Execute(async transactionExecutor =>
+            {
+                await Insert(transactionExecutor, VehicleRegistrationTableName, registrations);
+            });
+            Console.WriteLine("Vehicle registration data inserted");
+        }
+        
+        private async Task DeleteDataFromTable(string tableName)
+        {
+            Console.WriteLine($"Deleting all data from {tableName} table");
+
+            await qldbDriver.Execute(async transactionExecutor =>
+            {
+                await transactionExecutor.Execute($"DELETE FROM {tableName}");
+            });
+            
+            Console.WriteLine($"Cleared all data in {tableName} table");
         }
 
         private async Task<Amazon.QLDB.Driver.IAsyncResult> Insert<T>(AsyncTransactionExecutor transactionExecutor, string tableName, T value)
