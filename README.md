@@ -10,8 +10,6 @@ For a .NET QLDB tutorial, see [.NET and Amazon QLDB](https://docs.aws.amazon.com
 
 See [Accessing Amazon QLDB](https://docs.aws.amazon.com/qldb/latest/developerguide/accessing.html) for information on connecting to AWS.
 
-See [Setting Region](https://docs.aws.amazon.com/sdk-for-net/latest/developer-guide/net-dg-region-selection.html) page for more information on using the AWS SDK for .NET. You will need to set a region before running the sample code.
-
 ### .NET
 
 The sample app targets .NET Core 3.1. Please see the link below for more information on compatibility:
@@ -21,9 +19,9 @@ The sample app targets .NET Core 3.1. Please see the link below for more informa
 ## Project Explanation
 
 This app is split among three projects. 
-* Amazon.QLDB.DMVSample.Model which defines the nature of the data.
-* Amazon.QLDB.DMVSample.LedgerSetup which runs our initial setup (creating a ledger, tables, indices, and inserting data).
-* Amazon.QLDB.DMVSample.Api which efines the AWS Lambda functions that can be used to handle HTTP requests when deployed.
+* [Amazon.QLDB.DMVSample.Model](https://github.com/aws-samples/amazon-qldb-dmv-sample-dotnet/tree/master/Amazon.QLDB.DMVSample.Model) defines the nature of the data.
+* [Amazon.QLDB.DMVSample.LedgerSetup]((https://github.com/aws-samples/amazon-qldb-dmv-sample-dotnet/tree/master/Amazon.QLDB.DMVSample.LedgerSetup)) runs our initial setup (creating a ledger, tables, indices, and inserting data).
+* [Amazon.QLDB.DMVSample.Api]((https://github.com/aws-samples/amazon-qldb-dmv-sample-dotnet/tree/master/Amazon.QLDB.DMVSample.Api)) defines the AWS Lambda functions that can be used to handle HTTP requests when deployed.
     These functions include:
     * Adding a person to the DMV.
     * Adding a vehicle to the DMV.
