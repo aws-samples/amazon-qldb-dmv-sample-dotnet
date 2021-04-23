@@ -1,6 +1,4 @@
 .idea/*
-Amazon.QLDB.DMVSample/bin/*
-Amazon.QLDB.DMVSample/obj/*
 Amazon.QLDB.DMVSample.Api/bin/*
 Amazon.QLDB.DMVSample.Api/obj/*
 Amazon.QLDB.DMVSample.Api/*.toml
