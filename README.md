@@ -20,8 +20,8 @@ The sample app targets .NET Core 3.1. Please see the link below for more informa
 
 This app is split among three projects. 
 * [Amazon.QLDB.DMVSample.Model](https://github.com/aws-samples/amazon-qldb-dmv-sample-dotnet/tree/master/Amazon.QLDB.DMVSample.Model) defines the nature of the data.
-* [Amazon.QLDB.DMVSample.LedgerSetup]((https://github.com/aws-samples/amazon-qldb-dmv-sample-dotnet/tree/master/Amazon.QLDB.DMVSample.LedgerSetup)) runs our initial setup (creating a ledger, tables, indices, and inserting data).
-* [Amazon.QLDB.DMVSample.Api]((https://github.com/aws-samples/amazon-qldb-dmv-sample-dotnet/tree/master/Amazon.QLDB.DMVSample.Api)) defines the AWS Lambda functions that can be used to handle HTTP requests when deployed.
+* [Amazon.QLDB.DMVSample.LedgerSetup](https://github.com/aws-samples/amazon-qldb-dmv-sample-dotnet/tree/master/Amazon.QLDB.DMVSample.LedgerSetup) runs our initial setup (creating a ledger, tables, indices, and inserting data).
+* [Amazon.QLDB.DMVSample.Api](https://github.com/aws-samples/amazon-qldb-dmv-sample-dotnet/tree/master/Amazon.QLDB.DMVSample.Api) defines the AWS Lambda functions that can be used to handle HTTP requests when deployed.
     These functions include:
     * Adding a person to the DMV.
     * Adding a vehicle to the DMV.
@@ -70,6 +70,10 @@ If we want to query the vehicles for a given person (such as the person with Gov
 ```
 [{"VIN":"1N4AL11D75C109151","Type":"Sedan","Year":2011,"Make":"Audi","Model":"A5","Color":"Silver"}]
 ```
+
+## Security
+
+See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
 
 ## License
 
