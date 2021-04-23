@@ -58,19 +58,16 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
             Vehicle vehicle = JsonConvert.DeserializeObject<Vehicle>(request.Body);
             APIGatewayProxyResponse response = new APIGatewayProxyResponse();
 
-            try
+            this.qldbDriver.Execute(transactionExecutor =>
             {
-                this.qldbDriver.Execute(transactionExecutor =>
+                context.Logger.Log($"Checking vehicle already exists for VIN {vehicle.Vin}.");
+                if (CheckIfVinAlreadyExists(transactionExecutor, vehicle.Vin))
                 {
-                    context.Logger.Log($"Checking vehicle already exists for VIN {vehicle.Vin}.");
-                    if (CheckIfVinAlreadyExists(transactionExecutor, vehicle.Vin))
-                    {
-                        context.Logger.Log($"Vehicle does exist for VIN {vehicle.Vin}, returning not modified.");
-                        response.StatusCode = (int)HttpStatusCode.NotModified;
-
-                        transactionExecutor.Abort();
-                    }
-
+                    context.Logger.Log($"Vehicle does exist for VIN {vehicle.Vin}, returning not modified.");
+                    response.StatusCode = (int)HttpStatusCode.NotModified;
+                }
+                else
+                {
                     context.Logger.Log($"Inserting vehicle for VIN {vehicle.Vin}.");
 
                     IIonValue ionVehicle = ConvertObjectToIonValue(vehicle);
@@ -78,13 +75,8 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
 
                     context.Logger.Log($"Inserted ionVehicle for VIN {vehicle.Vin}, returning OK.");
                     response.StatusCode = (int)HttpStatusCode.OK;
-                });
-            }
-            catch (TransactionAbortedException e) 
-            {
-                context.Logger.Log($"Transaction aborted.");
-                context.Logger.Log(e.ToString());
-            }
+                }
+            });
 
             return response;
         }

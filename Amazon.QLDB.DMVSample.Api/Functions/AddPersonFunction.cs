@@ -59,19 +59,16 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
             Person person = JsonConvert.DeserializeObject<Person>(request.Body, new JsonSerializerSettings { DateFormatString = "yyyy-MM-dd" });
             APIGatewayProxyResponse response = new APIGatewayProxyResponse();
 
-            try
+            this.qldbDriver.Execute(transactionExecutor =>
             {
-                this.qldbDriver.Execute(transactionExecutor =>
+                context.Logger.Log($"Checking person already exists for GovId {person.GovId}.");
+                if (CheckIfPersonAlreadyExists(transactionExecutor, person.GovId))
                 {
-                    context.Logger.Log($"Checking person already exists for GovId {person.GovId}.");
-                    if (CheckIfPersonAlreadyExists(transactionExecutor, person.GovId))
-                    {
-                        context.Logger.Log($"Person does exist for GovId {person.GovId}, aborting transaction and returning not modified.");
-                        response.StatusCode = (int)HttpStatusCode.NotModified;
-
-                        transactionExecutor.Abort();
-                    }
-
+                    context.Logger.Log($"Person does exist for GovId {person.GovId}, aborting transaction and returning not modified.");
+                    response.StatusCode = (int)HttpStatusCode.NotModified;
+                }
+                else
+                {
                     context.Logger.Log($"Inserting person for GovId {person.GovId}.");
 
                     IIonValue ionPerson = ConvertObjectToIonValue(person);
@@ -79,13 +76,8 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
 
                     context.Logger.Log($"Inserted person for GovId {person.GovId}, returning OK.");
                     response.StatusCode = (int)HttpStatusCode.OK;
-                });
-            }
-            catch (TransactionAbortedException e)
-            {
-                context.Logger.Log($"Transaction aborted.");
-                context.Logger.Log(e.ToString());
-            }
+                }
+            });
 
             return response;
         }
