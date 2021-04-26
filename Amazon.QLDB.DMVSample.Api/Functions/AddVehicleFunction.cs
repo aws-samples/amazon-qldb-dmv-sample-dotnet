@@ -56,15 +56,17 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
         public APIGatewayProxyResponse FunctionHandler(APIGatewayProxyRequest request, ILambdaContext context)
         {
             Vehicle vehicle = JsonConvert.DeserializeObject<Vehicle>(request.Body);
-            APIGatewayProxyResponse response = new APIGatewayProxyResponse();
 
-            this.qldbDriver.Execute(transactionExecutor =>
+            return this.qldbDriver.Execute(transactionExecutor =>
             {
                 context.Logger.Log($"Checking vehicle already exists for VIN {vehicle.Vin}.");
                 if (CheckIfVinAlreadyExists(transactionExecutor, vehicle.Vin))
                 {
                     context.Logger.Log($"Vehicle does exist for VIN {vehicle.Vin}, returning not modified.");
-                    response.StatusCode = (int)HttpStatusCode.NotModified;
+                    return new APIGatewayProxyResponse 
+                    { 
+                        StatusCode = (int)HttpStatusCode.NotModified
+                    };
                 }
                 else
                 {
@@ -74,11 +76,12 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
                     transactionExecutor.Execute($"INSERT INTO Vehicle ?", ionVehicle);
 
                     context.Logger.Log($"Inserted ionVehicle for VIN {vehicle.Vin}, returning OK.");
-                    response.StatusCode = (int)HttpStatusCode.OK;
+                    return new APIGatewayProxyResponse 
+                    { 
+                        StatusCode = (int)HttpStatusCode.OK
+                    };
                 }
             });
-
-            return response;
         }
 
         private bool CheckIfVinAlreadyExists(TransactionExecutor transactionExecutor, string vin)

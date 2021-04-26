@@ -57,18 +57,18 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
         [LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
         public APIGatewayProxyResponse FunctionHandler(APIGatewayProxyRequest request, ILambdaContext context)
         {
-            VehicleRegistration vehicleRegistration = JsonConvert.DeserializeObject<VehicleRegistration>(request.Body); 
-            APIGatewayProxyResponse response = new APIGatewayProxyResponse();
+            VehicleRegistration vehicleRegistration = JsonConvert.DeserializeObject<VehicleRegistration>(request.Body);
 
-            this.qldbDriver.Execute(transactionExecutor =>
+            return this.qldbDriver.Execute(transactionExecutor =>
             {
                 context.Logger.Log($"Checking vehicle registration already exists for VIN {vehicleRegistration.Vin}.");
                 if (!CheckIfVinAlreadyExists(transactionExecutor, vehicleRegistration.Vin))
                 {
                     context.Logger.Log($"Vehicle registration does not exist for VIN {vehicleRegistration.Vin}, returning not found.");
-                    response.StatusCode = (int)HttpStatusCode.NotFound;
-
-                    transactionExecutor.Abort();
+                    return new APIGatewayProxyResponse 
+                    { 
+                        StatusCode = (int)HttpStatusCode.NotFound
+                    };
                 }
 
                 context.Logger.Log($"Vehicle registration already exists, checking whats changed between current value and request.");
@@ -80,9 +80,10 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
                 if (!newSecondaryOwnersGovIds.Any())
                 {
                     context.Logger.Log($"Nothing changed, returning not modified.");
-                    response.StatusCode = (int)HttpStatusCode.NotModified;
-
-                    transactionExecutor.Abort();
+                    return new APIGatewayProxyResponse 
+                    { 
+                        StatusCode = (int)HttpStatusCode.NotModified
+                    };
                 }
 
                 string secondaryOwnerPersonDocumentId = this.tableMetadataService.GetDocumentId(transactionExecutor, PersonTableName, "GovId", newSecondaryOwnersGovIds.First());
@@ -96,16 +97,20 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
                         "INSERT INTO v.Owners.SecondaryOwners VALUE ?", ionVin, ionSecondaryOwner);
                     
                     context.Logger.Log($"Secondary owner added with document ID {secondaryOwnerPersonDocumentId}, returning OK.");
-                    response.StatusCode = (int)HttpStatusCode.OK;
+                    return new APIGatewayProxyResponse 
+                    { 
+                        StatusCode = (int)HttpStatusCode.OK
+                    };
                 } 
                 else
                 {
                     context.Logger.Log($"Secondary owner already exists, returning not modified.");
-                    response.StatusCode = (int)HttpStatusCode.NotModified;
+                    return new APIGatewayProxyResponse 
+                    { 
+                        StatusCode = (int)HttpStatusCode.NotModified
+                    };
                 }
             });
-
-            return response;
         }
 
         private bool CheckIfSecondaryOwnerExists(IEnumerable<string> secondaryOwners, string secondaryOwnerPersonDocumentId)

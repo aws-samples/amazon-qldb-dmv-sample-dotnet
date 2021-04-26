@@ -57,15 +57,17 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
         public APIGatewayProxyResponse FunctionHandler(APIGatewayProxyRequest request, ILambdaContext context)
         {
             Person person = JsonConvert.DeserializeObject<Person>(request.Body, new JsonSerializerSettings { DateFormatString = "yyyy-MM-dd" });
-            APIGatewayProxyResponse response = new APIGatewayProxyResponse();
 
-            this.qldbDriver.Execute(transactionExecutor =>
+            return this.qldbDriver.Execute(transactionExecutor =>
             {
                 context.Logger.Log($"Checking person already exists for GovId {person.GovId}.");
                 if (CheckIfPersonAlreadyExists(transactionExecutor, person.GovId))
                 {
-                    context.Logger.Log($"Person does exist for GovId {person.GovId}, aborting transaction and returning not modified.");
-                    response.StatusCode = (int)HttpStatusCode.NotModified;
+                    context.Logger.Log($"Person does exist for GovId {person.GovId}, returning not modified.");
+                    return new APIGatewayProxyResponse 
+                    { 
+                        StatusCode = (int)HttpStatusCode.NotModified
+                    };
                 }
                 else
                 {
@@ -75,11 +77,12 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
                     transactionExecutor.Execute($"INSERT INTO Person ?", ionPerson);
 
                     context.Logger.Log($"Inserted person for GovId {person.GovId}, returning OK.");
-                    response.StatusCode = (int)HttpStatusCode.OK;
+                    return new APIGatewayProxyResponse 
+                    { 
+                        StatusCode = (int)HttpStatusCode.OK
+                    };
                 }
             });
-
-            return response;
         }
 
         private bool CheckIfPersonAlreadyExists(TransactionExecutor transactionExecutor, string govId)

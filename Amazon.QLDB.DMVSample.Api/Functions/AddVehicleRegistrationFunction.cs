@@ -57,9 +57,8 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
         public APIGatewayProxyResponse FunctionHandler(APIGatewayProxyRequest request, ILambdaContext context)
         {
             VehicleRegistration vehicleRegistration = JsonConvert.DeserializeObject<VehicleRegistration>(request.Body);
-            APIGatewayProxyResponse response = new APIGatewayProxyResponse();
 
-            this.qldbDriver.Execute(transactionExecutor =>
+            return this.qldbDriver.Execute(transactionExecutor =>
             {
                 context.Logger.Log($"Looking for person document ID {vehicleRegistration.Owners?.PrimaryOwner?.PersonId}.");
                 string primaryOwnerPersonDocumentId = this.tableMetadataService.GetDocumentId(transactionExecutor, PersonTableName, "GovId", vehicleRegistration.Owners?.PrimaryOwner?.PersonId);
@@ -67,16 +66,20 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
                 if (string.IsNullOrWhiteSpace(primaryOwnerPersonDocumentId))
                 {
                     context.Logger.Log($"No person found with GovId {vehicleRegistration.Owners?.PrimaryOwner?.PersonId}, returning not found.");
-                    response.StatusCode = (int)HttpStatusCode.NotFound;
-                    transactionExecutor.Abort();
+                    return new APIGatewayProxyResponse 
+                    { 
+                        StatusCode = (int)HttpStatusCode.NotFound
+                    };
                 }
 
                 context.Logger.Log($"Checking vehicle registration already exists for VIN {vehicleRegistration.Vin}.");
                 if (CheckIfVinAlreadyExists(transactionExecutor, vehicleRegistration.Vin))
                 {
                     context.Logger.Log($"Vehicle registration does exist for VIN {vehicleRegistration.Vin}, returning not modified.");
-                    response.StatusCode = (int)HttpStatusCode.NotModified;
-                    transactionExecutor.Abort();
+                    return new APIGatewayProxyResponse 
+                    { 
+                        StatusCode = (int)HttpStatusCode.NotModified
+                    };
                 }
 
                 context.Logger.Log($"Inserting vehicle registration for VIN {vehicleRegistration.Vin}.");
@@ -84,12 +87,13 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
                 IIonValue ionVehicleRegistration = ConvertObjectToIonValue(vehicleRegistration);
 
                 transactionExecutor.Execute($"INSERT INTO VehicleRegistration ?", ionVehicleRegistration);
+                
+                context.Logger.Log($"Inserted vehicle registration for VIN {vehicleRegistration.Vin}, returning OK.");
+                return new APIGatewayProxyResponse 
+                { 
+                    StatusCode = (int)HttpStatusCode.OK
+                };
             });
-
-            context.Logger.Log($"Inserted vehicle registration for VIN {vehicleRegistration.Vin}, returning OK.");
-            response.StatusCode = (int)HttpStatusCode.OK;
-
-            return  response;
         }
 
         private bool CheckIfVinAlreadyExists(TransactionExecutor transactionExecutor, string vin)
