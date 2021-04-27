@@ -64,7 +64,7 @@ namespace Amazon.QLDB.DMVSample.LedgerSetup
         {
             if (!await CheckIndexExistsAsync(tableName, field))
             {
-                Console.WriteLine($"Index does not exists, creating index on {tableName} for {field}.");
+                Console.WriteLine($"Index does not exist, creating index on {tableName} for {field}.");
                 await qldbDriver.Execute(async transactionExecutor => await transactionExecutor.Execute($"CREATE INDEX ON {tableName}({field})"));
             }
             else

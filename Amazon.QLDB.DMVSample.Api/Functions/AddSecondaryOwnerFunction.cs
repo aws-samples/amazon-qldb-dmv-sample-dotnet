@@ -71,7 +71,7 @@ namespace Amazon.QLDB.DMVSample.Api.Functions
                     };
                 }
 
-                context.Logger.Log($"Vehicle registration already exists, checking whats changed between current value and request.");
+                context.Logger.Log($"Vehicle registration already exists, checking what's changed between current value and request.");
 
                 IEnumerable<string> existingSecondaryOwners = GetSecondaryOwners(transactionExecutor, vehicleRegistration.Vin);
                 IEnumerable<string> newSecondaryOwnersGovIds = vehicleRegistration.Owners.SecondaryOwners

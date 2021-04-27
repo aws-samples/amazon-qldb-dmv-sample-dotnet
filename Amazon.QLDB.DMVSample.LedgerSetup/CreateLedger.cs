@@ -75,7 +75,6 @@ namespace Amazon.QLDB.DMVSample.LedgerSetup
                 });
 
                 ledgerState = describeResponse.State;
-                await Task.Delay(2000);
             } 
             while (ledgerState != LedgerState.ACTIVE);
             Console.WriteLine("Ledger is active.");
