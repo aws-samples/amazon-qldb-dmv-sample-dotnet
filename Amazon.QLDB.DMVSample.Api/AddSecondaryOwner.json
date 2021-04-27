@@ -1,0 +1,17 @@
+{
+    "VIN": "KM8SRDHF6EU074761",
+    "LicensePlateNumber": "LS477D",
+    "State": "WA",
+    "City": "Tacoma",
+    "PendingPenaltyTicketAmount": "42.2",
+    "ValidFromDate": "2011-10-26",
+    "ValidToDate": "2023-09-25",
+    "Owners": {
+        "PrimaryOwner": {
+            "PersonId": "P626-168-229-765"
+        },
+        "SecondaryOwners": [{
+            "PersonId": "LOGANB486CG"
+        }]
+    } 
+}

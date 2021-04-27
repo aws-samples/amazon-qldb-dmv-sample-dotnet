@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amazon.QLDB.DMVSample.Api", "Amazon.QLDB.DMVSample.Api\Amazon.QLDB.DMVSample.Api.csproj", "{108A015A-20FD-4BA9-BED6-FCBDDB3C0628}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amazon.QLDB.DMVSample.LedgerSetup", "Amazon.QLDB.DMVSample.LedgerSetup\Amazon.QLDB.DMVSample.LedgerSetup.csproj", "{467CC1E8-2C71-4F28-9434-EBDD17D27AB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amazon.QLDB.DMVSample.Model", "Amazon.QLDB.DMVSample.Model\Amazon.QLDB.DMVSample.Model.csproj", "{67657631-A8BC-4742-8344-0A2DF722645D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{108A015A-20FD-4BA9-BED6-FCBDDB3C0628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{108A015A-20FD-4BA9-BED6-FCBDDB3C0628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{108A015A-20FD-4BA9-BED6-FCBDDB3C0628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{108A015A-20FD-4BA9-BED6-FCBDDB3C0628}.Release|Any CPU.Build.0 = Release|Any CPU
+		{467CC1E8-2C71-4F28-9434-EBDD17D27AB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{467CC1E8-2C71-4F28-9434-EBDD17D27AB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{467CC1E8-2C71-4F28-9434-EBDD17D27AB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{467CC1E8-2C71-4F28-9434-EBDD17D27AB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67657631-A8BC-4742-8344-0A2DF722645D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67657631-A8BC-4742-8344-0A2DF722645D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67657631-A8BC-4742-8344-0A2DF722645D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67657631-A8BC-4742-8344-0A2DF722645D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

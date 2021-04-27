@@ -1,0 +1,9 @@
+.idea/*
+Amazon.QLDB.DMVSample.Api/bin/*
+Amazon.QLDB.DMVSample.Api/obj/*
+Amazon.QLDB.DMVSample.Api/*.toml
+Amazon.QLDB.DMVSample.Api/.aws-sam/*
+Amazon.QLDB.DMVSample.LedgerSetup/bin/*
+Amazon.QLDB.DMVSample.LedgerSetup/obj/*
+Amazon.QLDB.DMVSample.Model/bin/*
+Amazon.QLDB.DMVSample.Model/obj/*
