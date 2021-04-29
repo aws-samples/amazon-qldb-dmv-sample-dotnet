@@ -1,5 +1,7 @@
 # Amazon QLDB .NET DMV Sample App
 
+[![AWS Provider](https://img.shields.io/badge/provider-AWS-orange?logo=amazon-aws&color=ff9900)](https://aws.amazon.com/qldb/)
+
 The samples in this project demonstrate several uses of Amazon Quantum Ledger Database (QLDB).
 
 For a .NET QLDB tutorial, see [.NET and Amazon QLDB](https://docs.aws.amazon.com/qldb/latest/developerguide/getting-started.dotnet.html).
