@@ -13,6 +13,8 @@ For a .NET QLDB tutorial, see [.NET and Amazon QLDB](https://docs.aws.amazon.com
 
 See [Accessing Amazon QLDB](https://docs.aws.amazon.com/qldb/latest/developerguide/accessing.html) for information on connecting to AWS.
 
+See [Setting Region](https://docs.aws.amazon.com/sdk-for-net/latest/developer-guide/net-dg-region-selection.html) page for more information on using the AWS SDK for .NET. You will need to set a region before running the sample code.
+
 ### .NET
 
 The sample app targets .NET Core 3.1. Please see the link below for more information on compatibility:
