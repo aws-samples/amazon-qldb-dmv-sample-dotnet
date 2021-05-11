@@ -35,7 +35,7 @@ This app is split among three projects.
     * Finding a vehicle registered to a given person.
     * Querying the vehicle registration history of a given vehicle.
 
-## Using the Sample code
+## Running the Sample code
 
 First we must set up our data. This can be done with the following command in the command line:
 
