@@ -76,6 +76,14 @@ If we want to query the vehicles for a given person (such as the person with Gov
 [{"VIN":"1N4AL11D75C109151","Type":"Sedan","Year":2011,"Make":"Audi","Model":"A5","Color":"Silver"}]
 ```
 
+## Documentation 
+
+DocFx is used for documentation. Download [Docfx](https://github.com/dotnet/docfx/releases) as docfx.zip, unzip and extract it to a local folder, and add it to PATH.
+
+You can generate the docstring HTML locally by running the following in the root directory of this repository:
+
+```docfx docs/docfx.json --serve```
+
 ## Security
 
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
