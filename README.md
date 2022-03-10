@@ -13,6 +13,8 @@ For a .NET QLDB tutorial, see [.NET and Amazon QLDB](https://docs.aws.amazon.com
 
 See [Accessing Amazon QLDB](https://docs.aws.amazon.com/qldb/latest/developerguide/accessing.html) for information on connecting to AWS.
 
+See [Setting Region](https://docs.aws.amazon.com/sdk-for-net/latest/developer-guide/net-dg-region-selection.html) page for more information on using the AWS SDK for .NET. You will need to set a region before running the sample code.
+
 ### .NET
 
 The sample app targets .NET Core 3.1. Please see the link below for more information on compatibility:
@@ -33,7 +35,7 @@ This app is split among three projects.
     * Finding a vehicle registered to a given person.
     * Querying the vehicle registration history of a given vehicle.
 
-## Using the Sample code
+## Running the Sample code
 
 First we must set up our data. This can be done with the following command in the command line:
 
@@ -73,6 +75,14 @@ If we want to query the vehicles for a given person (such as the person with Gov
 ```
 [{"VIN":"1N4AL11D75C109151","Type":"Sedan","Year":2011,"Make":"Audi","Model":"A5","Color":"Silver"}]
 ```
+
+## Documentation 
+
+DocFx is used for documentation. Download [Docfx](https://github.com/dotnet/docfx/releases) as docfx.zip, unzip and extract it to a local folder, and add it to PATH.
+
+You can generate the docstring HTML locally by running the following in the root directory of this repository:
+
+```docfx docs/docfx.json --serve```
 
 ## Security
 
