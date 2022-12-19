@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Amazon.IonDotnet" Version="1.2.2" />
-    <PackageReference Include="Amazon.QLDB.Driver" Version="1.4.0" />
+    <PackageReference Include="Amazon.QLDB.Driver" Version="1.4.1" />
     <PackageReference Include="AWSSDK.QLDB" Version="3.7.100.39" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
