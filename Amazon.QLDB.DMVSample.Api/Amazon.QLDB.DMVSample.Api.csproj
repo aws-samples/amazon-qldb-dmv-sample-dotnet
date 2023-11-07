@@ -9,7 +9,7 @@
     <PackageReference Include="Amazon.Lambda.Core" Version="2.1.0" />
     <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.3.0" />
     <PackageReference Include="Amazon.QLDB.Driver" Version="1.4.1" />
-    <PackageReference Include="AWSSDK.QLDB" Version="3.7.100.58" />
+    <PackageReference Include="AWSSDK.QLDB" Version="3.7.200.65" />
     <PackageReference Include="AWSSDK.QLDBSession" Version="3.7.100.54" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
